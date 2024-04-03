@@ -1,0 +1,20 @@
+Private Declare PtrSafe Function GetCursorPos Lib "user32" (lpPoint As POINTAPI) As Long
+
+Private Type POINTAPI
+    x As Long
+    y As Long
+End Type
+
+Sub MostrarPosicaoMouse()
+    Application.Wait Now + TimeValue("00:00:02")
+    Dim pt As POINTAPI
+    Dim x As Long, y As Long
+    
+    GetCursorPos pt
+    
+    x = pt.x
+    y = pt.y
+    
+    MsgBox "Posição X: " & x & vbCrLf & "Posição Y: " & y
+End Sub
+
