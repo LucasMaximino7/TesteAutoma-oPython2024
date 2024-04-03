@@ -1,0 +1,44 @@
+import pyautogui
+import time
+import keyboard
+
+cancelado = False
+
+##RESOLUÇÃO 1920 X 1080
+
+def main():
+    global cancelado
+    ofs = []
+    insumos = []
+
+    for i in range(3):
+        ofs.append(input(f"Digite o código da {i+1}ª OF: "))
+        insumos.append(input(f"Digite o insumo correspondente à {i+1}ª OF: "))
+    
+    pyautogui.click(656, 1059)
+
+    for i in range(3):
+        if cancelado:
+            print("Operação cancelada.")
+            break
+
+        time.sleep(0.5)
+        pyautogui.doubleClick(9, 50)
+        time.sleep(0.1)
+        pyautogui.typewrite(ofs[i])
+        time.sleep(0.1)
+        pyautogui.doubleClick(4, 102)
+        pyautogui.typewrite(insumos[i])
+        time.sleep(1)
+
+    pyautogui.hotkey("alt", "tab")
+
+def on_press(event):
+    global cancelado
+    if event.name == "esc":
+        cancelado = True
+
+if __name__ == "__main__":
+    keyboard.on_press(on_press)
+    main()
+    keyboard.unhook_all()
