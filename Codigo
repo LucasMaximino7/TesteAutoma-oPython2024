@@ -1,0 +1,27 @@
+Declare PtrSafe Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal y As Long) As Long
+Declare PtrSafe Sub mouse_event Lib "user32" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal cButtons As Long, ByVal dwExtraInfo As Long)
+Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+
+Sub CliqueEcole()
+    SetCursorPos 410, 740
+    mouse_event &H2, 0, 0, 0, 0
+    mouse_event &H4, 0, 0, 0, 0
+    Application.Wait Now + TimeValue("00:00:01")
+
+    SetCursorPos 16, 49
+    mouse_event &H2, 0, 0, 0, 0
+    mouse_event &H4, 0, 0, 0, 0
+    Application.Wait Now + TimeValue("00:00:01")
+
+    Sheets("Planilha1").Range("A1").Copy
+    SendKeys "^v"
+    Application.Wait Now + TimeValue("00:00:01")
+
+    SetCursorPos 16, 200
+    mouse_event &H2, 0, 0, 0, 0
+    mouse_event &H4, 0, 0, 0, 0
+
+    Sheets("Planilha1").Range("B1").Copy
+    SendKeys "^v"
+End Sub
+
