@@ -1,0 +1,53 @@
+#If VBA7 Then
+    Private Declare PtrSafe Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal y As Long) As Long
+    Private Declare PtrSafe Sub mouse_event Lib "user32" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal dwData As Long, ByVal dwExtraInfo As Long)
+    Private Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+#Else
+    Private Declare Function SetCursorPos Lib "user32" (ByVal x As Long, ByVal y As Long) As Long
+    Private Declare Sub mouse_event Lib "user32" (ByVal dwFlags As Long, ByVal dx As Long, ByVal dy As Long, ByVal dwData As Long, ByVal dwExtraInfo As Long)
+    Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+#End If
+
+Sub CliqueEcole()
+    Dim i As Long
+
+    Sleep 400
+    
+    Call SetCursorPos(720, 1055)
+    mouse_event &H2, 0, 0, 0, 0
+    mouse_event &H4, 0, 0, 0, 0
+    DoEvents
+    
+    For i = 1 To 4
+        Call SetCursorPos(635, 149)
+        mouse_event &H2, 0, 0, 0, 0
+        mouse_event &H4, 0, 0, 0, 0
+        mouse_event &H2, 0, 0, 0, 0
+        mouse_event &H4, 0, 0, 0, 0
+        DoEvents
+        
+        Application.Wait Now + TimeValue("00:00:01") / 3
+        
+        Application.SendKeys "^c"
+        DoEvents
+        
+        Application.Wait Now + TimeValue("00:00:01") / 3
+        
+        ThisWorkbook.Sheets("Planilha1").Range("A" & i).PasteSpecial
+        
+        Dim celula As Range
+        Dim textoSemEspacos As String
+        Set celula = ThisWorkbook.Sheets("Planilha1").Range("A" & i)
+        textoSemEspacos = Replace(celula.Value, " ", "")
+        celula.Value = textoSemEspacos
+        
+        If ThisWorkbook.Sheets("Planilha1").Range("A" & i).Value = ThisWorkbook.Sheets("Planilha1").Range("B" & i).Value Then
+            ThisWorkbook.Sheets("Planilha1").Range("C" & i).Value = "Verdadeiro"
+        Else
+            ThisWorkbook.Sheets("Planilha1").Range("C" & i).Value = "Falso"
+        End If
+        
+        Application.Wait Now + TimeValue("00:00:01")
+    Next i
+End Sub
+
